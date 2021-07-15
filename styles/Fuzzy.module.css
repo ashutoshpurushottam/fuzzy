@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+.container {
+  min-height: 100vh;
+  padding: 0 0.5rem;
+  margin: 0 auto;
+}
+
+.main {
+  padding: 1rem 0;
+  font-size: 1.25rem;
+}
+
+.fuzzy input {
+  width: 100%;
+  padding: 16px 16px;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.fuzzy input::placeholder {
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 15px;
+  line-height: 22px;
+}
