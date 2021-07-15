@@ -10,6 +10,7 @@ export default function Home() {
           options={characters}
           fuseThreshold={0.4}
           keys={['name', 'company', 'species']}
+          minChars={2}
         />
       </main>
     </div>

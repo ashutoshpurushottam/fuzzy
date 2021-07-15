@@ -12,4 +12,5 @@ export declare type props = {
   options: Array<FuzzyOption>;
   keys: Array<string>;
   fuseThreshold: number;
+  minChars: number;
 };

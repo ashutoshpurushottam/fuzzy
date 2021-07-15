@@ -4,7 +4,12 @@ import fuzzyStyles from './../../styles/Fuzzy.module.css';
 import { props, FuzzyOption } from './model';
 import uuid from 'react-uuid';
 
-const FuzzySearch: React.FC<props> = ({ options, keys, fuseThreshold }) => {
+const FuzzySearch: React.FC<props> = ({
+  options,
+  keys,
+  fuseThreshold,
+  minChars,
+}) => {
   const fuse = new Fuse(options, {
     keys: keys,
     includeScore: true,
@@ -13,17 +18,31 @@ const FuzzySearch: React.FC<props> = ({ options, keys, fuseThreshold }) => {
 
   const [query, setQuery] = useState<string>('');
   const [filterItems, setFilterItems] = useState<FuzzyOption[]>([]);
+  const [selectedItems, setSelectedItems] = useState<FuzzyOption[]>([]);
+
+  useEffect(() => {
+    if (query.length === 0) {
+      setFilterItems([]);
+    }
+  }, [query]);
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setQuery(e.target.value);
-    const results = fuse.search(query);
+    const inputQuery = e.target.value;
+    console.log('==QUERY==', inputQuery);
+    setQuery(inputQuery);
+    const results = fuse.search(inputQuery);
     console.log('==RESULTS==', results);
     const filteredItems = results.map(searchResult => searchResult.item);
     setFilterItems(filteredItems);
   };
 
+  const handleOnSelection = (item: FuzzyOption) => {
+    setSelectedItems([...selectedItems, item]);
+    setQuery('');
+  };
+
   return (
-    <div className={fuzzyStyles.container}>
+    <div className={fuzzyStyles.fuzzy}>
       <h3>Fuzzy</h3>
       <input
         type='text'
@@ -31,11 +50,26 @@ const FuzzySearch: React.FC<props> = ({ options, keys, fuseThreshold }) => {
         onChange={handleOnChange}
         placeholder='Search'
       />
-      <ul>
-        {filterItems.map(item => {
-          return <li key={uuid()}>{item.name}</li>;
-        })}
-      </ul>
+      {selectedItems.map((item: FuzzyOption) => {
+        return (
+          <span className={fuzzyStyles.button} key={uuid()}>
+            {item.name}
+          </span>
+        );
+      })}
+      <div className={fuzzyStyles.suggestions_container}>
+        {filterItems &&
+          filterItems.map((item: FuzzyOption, idx: number) => {
+            return (
+              <div
+                key={uuid()}
+                className={fuzzyStyles.item}
+                onClick={() => handleOnSelection(item)}>
+                {item.name}
+              </div>
+            );
+          })}
+      </div>
     </div>
   );
 };
