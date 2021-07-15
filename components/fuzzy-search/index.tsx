@@ -37,8 +37,10 @@ const FuzzySearch: React.FC<props> = ({
   };
 
   const handleOnSelection = (item: FuzzyOption) => {
-    setSelectedItems([...selectedItems, item]);
-    setQuery('');
+    if (!selectedItems.includes(item)) {
+      setSelectedItems([...selectedItems, item]);
+      setQuery('');
+    }
   };
 
   return (
