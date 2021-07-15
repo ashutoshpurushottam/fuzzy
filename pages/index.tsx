@@ -1,4 +1,4 @@
-import FuzzySearch from '../components/fuzzy-search';
+import FuzzySearch from '../components/fuzzy-multi-search';
 import styles from '../styles/Home.module.css';
 import characters from './../characters.json';
 

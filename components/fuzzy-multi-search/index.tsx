@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Fuse from 'fuse.js';
-import fuzzyStyles from './../../styles/Fuzzy.module.css';
+import fuzzyStyles from './Fuzzy.module.css';
 import { props, FuzzyOption } from './model';
 import uuid from 'react-uuid';
 
