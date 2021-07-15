@@ -1,17 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Fuse from 'fuse.js';
 import fuzzyStyles from './../../styles/Fuzzy.module.css';
-import { props } from './model';
-
-interface FuzzyOption {
-  name: string;
-  company: string;
-  species: string;
-}
-
-interface FuzzyOptions {
-  options: Array<FuzzyOption>;
-}
+import { props, FuzzyOption } from './model';
+import uuid from 'react-uuid';
 
 const FuzzySearch: React.FC<props> = ({ options, keys, fuseThreshold }) => {
   const fuse = new Fuse(options, {
@@ -21,11 +12,14 @@ const FuzzySearch: React.FC<props> = ({ options, keys, fuseThreshold }) => {
   });
 
   const [query, setQuery] = useState<string>('');
+  const [filterItems, setFilterItems] = useState<FuzzyOption[]>([]);
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value);
     const results = fuse.search(query);
     console.log('==RESULTS==', results);
+    const filteredItems = results.map(searchResult => searchResult.item);
+    setFilterItems(filteredItems);
   };
 
   return (
@@ -37,6 +31,11 @@ const FuzzySearch: React.FC<props> = ({ options, keys, fuseThreshold }) => {
         onChange={handleOnChange}
         placeholder='Search'
       />
+      <ul>
+        {filterItems.map(item => {
+          return <li key={uuid()}>{item.name}</li>;
+        })}
+      </ul>
     </div>
   );
 };
